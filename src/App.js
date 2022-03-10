@@ -20,8 +20,15 @@ function App() {
       }
     }).then(returnData => {
       setData(returnData.properties)
+      var sumData = 0;
+      for(const row of data) {
+        sumData += row.valuation
+      }
+      setTotal(sumData)
     })
   }, [])
+
+
 
   const numberWithCommas = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -55,6 +62,7 @@ function App() {
       ])
       setAddress("")
       setValuation("")
+      setTotal(total + valuation)
     })
   }
 
@@ -92,7 +100,7 @@ function App() {
               <tr className='invisible-row'>
                 <th></th>
                 <th></th>
-                <th><strong>Total</strong> <span>$ {total}</span></th>
+                <th><strong>Total</strong> <span>${numberWithCommas(total)}</span></th>
               </tr>
             </tbody>
           </table>
