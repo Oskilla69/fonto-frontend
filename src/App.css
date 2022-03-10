@@ -1,3 +1,82 @@
 .App {
-  text-align: center;
+  text-align: left;
+  padding-left: 2vw;
+}
+
+.App-header {
+  text-align: left;
+}
+
+.main {
+  display: flex;
+}
+
+.table-div {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+}
+.table {
+  width: 100%;
+}
+
+.add-property {
+  width: 100px;
+  margin-left: auto;
+  box-shadow: 4px 4px black;
+  margin-bottom: 6px;
+}
+
+th {
+  background-color: gray;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.id-col, .valuation-col {
+  width: 20%;
+}
+
+.address-col {
+  width: 60%;
+}
+
+
+
+.form {
+  border: 1px solid black;
+  width: 40%;
+  max-width: 360px;
+  height: 25vh;
+  padding: 10px;
+  position: fixed;
+  margin-inline: auto;
+  background-color: white;
+}
+
+.address-input {
+  margin-bottom: 20px;
+}
+
+.address-input > input {
+  width: 60%;
+  /* margin-left: 20px; */
+  position: absolute;
+  left: 100px;
+}
+
+.valuation-input {
+  margin-bottom: 20px;
+}
+
+.valuation-input > input {
+  position: absolute;
+  left: 100px;
+}
+
+.button-group > button {
+  box-shadow: 4px 4px black;
 }

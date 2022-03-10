@@ -15,26 +15,58 @@ function App() {
       setData(data)
     })
   }, [])
+
+  const numberWithCommas = x => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   
   return (
     <div className="App">
       <header className="App-header">
         <h1>Properties</h1>
       </header>
-      <main>
-        <button>Add Property</button>
-        <table>
-          <tr>
-            <th>ID</th>
-            <th>Address</th>
-            <th>Valuation</th>
-          </tr>
-          {data && data.properties.map(row => {
-            if(!row.hidden) {
-              return <tr><td>{row.id}</td><td>{row.address}</td><td>{row.valuation}</td></tr>
-            }
-        })}
-        </table>
+      <main className='main'>
+        <div className='table-div'>
+
+          <button className='add-property'>Add Property</button>
+          <table className='table'>
+
+            <colgroup>
+              <col className="id-col" span="1"/>
+              <col className="address-col" span="1"/>
+              <col className="valuation-col" span="1"/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <th className='id-head'>ID</th>
+                <th className='address-head'>Address</th>
+                <th className='valuation-head'>Valuation</th>
+              </tr>
+              {data && data.properties.map(row => {
+                if(!row.hidden) {
+                  return <tr><td className='id-data'>{row.id}</td><td>{row.address}</td><td>${numberWithCommas(row.valuation)}</td></tr>
+                }
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <div className='form'>
+          <p>Enter property details</p>
+          <div className='address-input'>     
+            <label>Address</label>
+            <input></input>
+          </div>
+          <div className='valuation-input'>     
+            <label>Valuation</label>
+            <input></input>
+          </div>
+
+          <div className='button-group'>
+            <button className='cancel'>Cancel</button>
+            <button className='accept'>Accept</button>
+          </div>
+        </div>
       </main>
     </div>
   );
