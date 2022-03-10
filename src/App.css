@@ -53,12 +53,19 @@ table, th, td {
   height: 25vh;
   padding: 10px;
   position: fixed;
-  margin-inline: auto;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-title {
+  margin-top: 0;
 }
 
 .address-input {
-  margin-bottom: 20px;
+  margin-block: 16px;
 }
 
 .address-input > input {
@@ -69,7 +76,7 @@ table, th, td {
 }
 
 .valuation-input {
-  margin-bottom: 20px;
+  margin-block: 16px;
 }
 
 .valuation-input > input {
@@ -77,6 +84,12 @@ table, th, td {
   left: 100px;
 }
 
+.button-group {
+  margin-top: 16px;
+  margin-inline: auto;
+}
+
 .button-group > button {
   box-shadow: 4px 4px black;
+  margin-inline: 14px;
 }

@@ -2,24 +2,66 @@ import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
-  const headers = { 'x-hasura-user-id': 'OFy22JCTOKbqrsF' }
   const [data, setData] = useState(null);
+
+  const [address, setAddress] = useState("");
+  const [valuation, setValuation] = useState("");
+  const [total, setTotal] = useState(0);
+
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
+    const headers = { 'x-hasura-user-id': 'OFy22JCTOKbqrsF' }
     fetch('https://take-home.hasura.app/api/rest/properties/all', {headers}).then(res => {
       if(res.ok) {
         return res.json()
       } else {
         console.log("error in API")
       }
-    }).then(data => {
-      setData(data)
+    }).then(returnData => {
+      setData(returnData.properties)
     })
   }, [])
 
   const numberWithCommas = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-  
+
+  const handleAccept = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("x-hasura-user-id", "OFy22JCTOKbqrsF");
+
+    var formdata = new FormData();
+    formdata.append("address", address);
+    formdata.append("valuation", valuation);
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    handleVisible()
+
+    fetch('https://take-home.hasura.app/api/rest/properties/add', requestOptions).then(res => {
+      if(res.ok) {
+        return res.json()
+      }
+    }).then(returnData => {
+      setData([
+        ...data,
+        {'id': returnData.add_property.id, 'address': address, 'valuation': valuation}
+      ])
+      setAddress("")
+      setValuation("")
+    })
+  }
+
+  const handleVisible = () => {
+    setVisible(!visible)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -28,7 +70,7 @@ function App() {
       <main className='main'>
         <div className='table-div'>
 
-          <button className='add-property'>Add Property</button>
+          <button className='add-property' onClick={handleVisible}>Add Property</button>
           <table className='table'>
 
             <colgroup>
@@ -42,31 +84,42 @@ function App() {
                 <th className='address-head'>Address</th>
                 <th className='valuation-head'>Valuation</th>
               </tr>
-              {data && data.properties.map(row => {
+              {data && data.map(row => {
                 if(!row.hidden) {
                   return <tr><td className='id-data'>{row.id}</td><td>{row.address}</td><td>${numberWithCommas(row.valuation)}</td></tr>
                 }
               })}
+              <tr className='invisible-row'>
+                <th></th>
+                <th></th>
+                <th><strong>Total</strong> <span>$ {total}</span></th>
+              </tr>
             </tbody>
           </table>
         </div>
+        {visible && 
+          <div className='form'>
+            <p className='form-title'>Enter property details</p>
+            <div className='address-input'>     
+              <label>Address</label>
+              <input onChange={event => {
+                setAddress(event.target.value)
+              }} value={address}></input>
+            </div>
+            <div className='valuation-input'>     
+              <label>Valuation</label>
+              <input type="number" onChange={event => {
+                setValuation(event.target.value)
+              }} value={valuation}></input>
+            </div>
 
-        <div className='form'>
-          <p>Enter property details</p>
-          <div className='address-input'>     
-            <label>Address</label>
-            <input></input>
+            <div className='button-group'>
+              <button className='cancel' onClick={handleVisible}>Cancel</button>
+              <button className='accept' onClick={handleAccept}>Accept</button>
+            </div>
           </div>
-          <div className='valuation-input'>     
-            <label>Valuation</label>
-            <input></input>
-          </div>
-
-          <div className='button-group'>
-            <button className='cancel'>Cancel</button>
-            <button className='accept'>Accept</button>
-          </div>
-        </div>
+          }
+        
       </main>
     </div>
   );
